@@ -13,8 +13,8 @@ import { UpdateUserInput } from '../inputs/user/UpdateUserInput';
 @Resolver((of) => User)
 export class UserResolver {
   @Query(() => [User])
-  users() {
-    return User.find();
+  async users() {
+    return await User.find();
   }
   @Query(() => User)
   user(@Arg('userId') id: number) {
@@ -22,7 +22,7 @@ export class UserResolver {
   }
   @Mutation(() => User)
   async createUser(@Arg('userData') data: CreateUserInput) {
-    const user = User.create(data);
+    const user = User.create<User>(data);
     await user.save();
 
     return user;

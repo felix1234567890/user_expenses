@@ -1,13 +1,13 @@
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from 'type-graphql';
+import { dataSource } from "../data-source";
 
 import { TransactionResolver } from './resolvers/TransactionResolver';
 import { UserResolver } from './resolvers/UserResolver';
 
 async function start() {
-  await createConnection();
+  await dataSource.initialize();
   const schema = await buildSchema({
     resolvers: [TransactionResolver, UserResolver],
     dateScalarMode: 'isoDate',

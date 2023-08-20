@@ -30,7 +30,7 @@ export class TransactionResolver {
     @Arg('transactionData') transactionData: TransactionInput
   ) {
     try {
-      const user = await User.findOneOrFail({ id: transactionData.userId });
+      const user = await User.findOneOrFail({where:{ id: transactionData.userId }});
       if (!user) throw new Error('No user for this Id');
 
       const transaction = Transaction.create({
@@ -41,8 +41,10 @@ export class TransactionResolver {
 
       await transaction.save();
       return transaction;
-    } catch (error) {
-      throw new Error(error.message);
+    } catch (error:unknown) {
+      if (error instanceof Error){
+        throw new Error(error.message);
+      }
     }
   }
   @Mutation(() => Transaction)

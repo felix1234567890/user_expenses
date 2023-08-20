@@ -4,8 +4,8 @@
 # -----------------------------------------------
 
 input CreateUserInput {
-  name: String!
   email: String!
+  name: String!
 }
 
 """
@@ -15,56 +15,56 @@ scalar DateTime
 
 """Scale of an expense"""
 enum ExpenseScale {
+  HIGH
   LOW
   MODERATE
-  HIGH
 }
 
 type Mutation {
   createTransaction(transactionData: TransactionInput!): Transaction!
-  updateTransaction(transactionData: TransactionInputUpdate!, transactionId: Float!): Transaction!
-  deleteTransaction(transactionId: Float!): Boolean!
   createUser(userData: CreateUserInput!): User!
-  updateUser(UserData: UpdateUserInput!, userId: Float!): User!
+  deleteTransaction(transactionId: Float!): Boolean!
   deleteUser(userId: Float!): Boolean!
+  updateTransaction(transactionData: TransactionInputUpdate!, transactionId: Float!): Transaction!
+  updateUser(UserData: UpdateUserInput!, userId: Float!): User!
 }
 
 type Query {
-  transactions: [Transaction!]!
   transaction(transactionId: Float!): Transaction!
-  users: [User!]!
+  transactions: [Transaction!]!
   user(userId: Float!): User!
+  users: [User!]!
 }
 
 type Transaction {
+  amount: Float!
+  expenseScale: ExpenseScale!
   id: ID!
   text: String!
-  amount: Float!
-  user: User
   transactionDate: DateTime!
-  expenseScale: ExpenseScale!
+  user: User
 }
 
 input TransactionInput {
-  text: String!
   amount: Float!
+  text: String!
   userId: ID!
 }
 
 input TransactionInputUpdate {
-  text: String
   amount: Float
+  text: String
 }
 
 input UpdateUserInput {
-  name: String
   email: String
+  name: String
 }
 
 type User {
+  email: String!
   id: ID!
   name: String!
-  email: String!
-  transactions: [Transaction!]
   totalTransactions: Int!
+  transactions: [Transaction!]
 }
